@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Link } from "gatsby"
+import { graphql, Link } from "gatsby"
 import { StaticImage } from "gatsby-plugin-image"
 import { useEffect, useState } from "react";
 import styled from '@emotion/styled'
@@ -11,9 +11,10 @@ const Wrapper = styled.div`
 }
 .wrap {
     display: flex;
+    height: 100vh;
     justify-content: center;
-    margin: 10px;
-    
+    align-items:center;
+    margin-top: -2%; 
 }
 .card {
 text-decoration: none!important;
@@ -61,8 +62,9 @@ p:last-of-type {
 
 `
 
-export default function Index(){
+export default function Index({data}){
     const [propertyData, setPropertyData] = useState();
+    console.log(data)
 
     useEffect(()=>{
         fetch(`/api/testAPI`, {
@@ -103,27 +105,63 @@ export default function Index(){
     
     return(
         <Wrapper>
-            <h1 class="heading">Property Data:</h1>
-            {propertyData?
+            {/* <h1 class="heading">Manor Realty Properties:</h1> */}
             <div className="wrap">
-            {propertyData.map((property, i) => (
-                <Link to={"/"+property[0].PropertyAddress1+property[0].PropertyAddress2} className="card" key={"Property " + i}>
+            {data.palacePropertyDetails.data.map((property, i) => (
+                <Link to={"/"+property.PropertyAddress1+property.PropertyAddress2} className="card" key={"Property " + i}>
                     <div className="imgcontainer">
-                        <img src={property[1][0].PropertyImageURL}/>
+                        <img src={data.palacePropertyImages.data[i][0].PropertyImageURL}/>
                     </div>
-                    <p className="subtitle">{property[0].PropertyAddress1}, {property[0].PropertyAddress2}, {property[0].PropertyAddress3}, {property.PropertyAddress4}</p>
-                    <p>Rent Amount: ${property[0].PropertyRentAmount} per {property[0].PropertyRentalPeriod}</p>
-                    <p>{property[0].PropertyFeatures.PropertyAdvertText.slice(0, 125)}</p>
+                    <p className="subtitle">{property.PropertyAddress1}, {property.PropertyAddress2}, {property.PropertyAddress3}, {property.PropertyAddress4}</p>
+                    <p>Rent Amount: ${property.PropertyRentAmount} per {property.PropertyRentalPeriod}</p>
+                    <p>{property.PropertyFeatures.PropertyAdvertText.slice(0, 125)}</p>
                     <p>Read More...</p>
                 </Link>
             ))}
             </div>
-            :
-            <div>
-                Loading...
-            </div>
-
-            }
         </Wrapper>
     )
 }
+
+export const query = graphql`
+    query{
+        palacePropertyDetails{
+            data{
+                PropertyAddress1
+                PropertyAddress2
+                PropertyAddress3
+                PropertyAddress4
+                PropertyCode
+                PropertyDateAvailable
+                PropertyName
+                PropertyRentAmount
+                PropertyRentalPeriod
+                PropertyCustomList {
+                    PropertyCustomName
+                    PropertyCustomValue
+                }
+                PropertyFeatures {
+                    PropertyAdvertText
+                    PropertyAmenities
+                    PropertyBathroomsNo
+                    PropertyBedroomsNo
+                    PropertyCarsNo
+                    PropertyClass
+                    PropertyEnsuitesNo
+                    PropertyFeatureDetails
+                    PropertyFloorArea
+                    PropertyFurnishings
+                    PropertyGeographicLocation
+                    PropertyHeader
+                    PropertyLandAreaHectares
+                    PropertyLandAreaMSquared
+                }
+            }
+        }
+        palacePropertyImages {
+            data {
+                PropertyImageURL
+            }
+        }
+    }
+`

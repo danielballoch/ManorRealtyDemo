@@ -1,10 +1,15 @@
-import React, {useState} from "react"
-import { graphql } from "gatsby"
+import React, {useState, useEffect} from "react"
+import { graphql, Link } from "gatsby"
 import styled from '@emotion/styled'
 
 const Wrapper = styled.div`
 max-width: 900px;
 margin: 50px auto;
+p {
+    a {
+        text-decoration: none;
+    }
+}
 .mainImg {
     border-radius: 10px;
 }
@@ -65,20 +70,55 @@ margin: 50px auto;
 }
 `
 
+const BackButton = styled(Link)`
+text-decoration: none;
+color: black;
+font-size: 18px;
+text-decoration: underline 0px rgba(0,0,0,0);
+transition: .3s;
+:hover {
+    text-decoration: underline 2px black;
+}
+`
+
 export default function PropertyPage({data, pageContext}){
     const [activePicture, setActivePicture] = useState(0)
-    console.log(data);
-    console.log(pageContext)
-    console.log(data.palacePropertyImages.data[pageContext.slug].length)
-    
+    const [tenancyLink, setTenancyLink] = useState()
     let props = data.palacePropertyDetails.data[pageContext.slug];
     let imageProps = data.palacePropertyImages.data[pageContext.slug];
-    console.log(imageProps.length)
+
+    useEffect(()=>{
+        fetch(`/api/testAPI2`, {
+            method: `POST`,
+            headers: {
+              "content-type": `application/json`,
+            },
+            body: JSON.stringify({
+                agent_name: props.PropertyAgent.PropertyAgentFullName,
+                agent_email: props.PropertyAgent.PropertyAgentEmail,
+                client_code: props.PropertyAgent.PropertyAgentCode,
+                property_code: props.PropertyCode,
+                unit: props.PropertyFeatures.PropertyUnit,
+                street_name: props.PropertyAddress2,
+                postcode: "3210"
+            })
+          })
+        .then(res => res.json())
+        .then(body => {
+          console.log(`response from API:`, body);
+          setTenancyLink(body)
+        })
+    },[])
+
+    console.log(data);
+    console.log(pageContext)
+
     return(
         <Wrapper>
+            <BackButton to="/">Back to Properties</BackButton>
             <img src={imageProps[activePicture].PropertyImageURL}></img>
             <div className="buttons">
-                <button onClick={() => {if(activePicture>0){setActivePicture(activePicture-1)}}}><span className="arrow left"/></button>
+                <button onClick={() => {if(activePicture>0){setActivePicture(activePicture-1)}else {setActivePicture(imageProps.length-1)}}}><span className="arrow left"/></button>
                 {imageProps.map((X,i) => 
                     <button onClick={() => {setActivePicture(i)}} className={activePicture == i ? "dot active" : "dot"}/>
                 )}
@@ -89,6 +129,10 @@ export default function PropertyPage({data, pageContext}){
             <p>Rent Amount: ${props.PropertyRentAmount} Per {props.PropertyRentalPeriod}</p>
             <p>Date Available: {props.PropertyDateAvailable}</p>
             <p>{props.PropertyFeatures.PropertyAdvertText}</p>
+            {tenancyLink? 
+            <p>Apply for Tenancy: <a href={tenancyLink.redirect}>{tenancyLink.redirect}</a></p>
+            : <p></p>
+            }
         </Wrapper>
     )
 }
@@ -144,6 +188,11 @@ export const query = graphql`
                     PropertyVirtualTourURL
                     PropertyWebLinkURL
                     PropertyYearBuilt
+                }
+                PropertyAgent {
+                    PropertyAgentCode
+                    PropertyAgentEmail1
+                    PropertyAgentFullName
                 }
             }
         }

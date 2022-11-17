@@ -136,6 +136,11 @@ exports.createPages = async ({actions: {createPage}, graphql}) => {
                         PropertyWebLinkURL
                         PropertyYearBuilt
                     }
+                    PropertyAgent {
+                        PropertyAgentCode
+                        PropertyAgentEmail1
+                        PropertyAgentFullName
+                    }
                 }
             }
             palacePropertyImages {
