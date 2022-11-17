@@ -95,7 +95,6 @@ export default function PropertyPage({data, pageContext}){
     const [tenancyLink, setTenancyLink] = useState()
     let props = data.palacePropertyDetails.data[pageContext.slug];
     let imageProps = data.palacePropertyImages.data[pageContext.slug];
-
     useEffect(()=>{
         fetch(`/api/testAPI2`, {
             method: `POST`,
@@ -104,11 +103,14 @@ export default function PropertyPage({data, pageContext}){
             },
             body: JSON.stringify({
                 agent_name: props.PropertyAgent.PropertyAgentFullName,
-                agent_email: props.PropertyAgent.PropertyAgentEmail,
-                client_code: props.PropertyAgent.PropertyAgentCode,
+                agent_email: props.PropertyAgent.PropertyAgentEmail1,
+                client_code: "1234",
                 property_code: props.PropertyCode,
                 unit: props.PropertyFeatures.PropertyUnit,
+                number: props.PropertyAddress1,
                 street_name: props.PropertyAddress2,
+                suburb: props.PropertyAddress3,
+                city: props.PropertyAddress4,
                 postcode: props.PropertyFeatures.PropertyPostCode
             })
           })
@@ -139,8 +141,8 @@ export default function PropertyPage({data, pageContext}){
             <p>Date Available: {props.PropertyDateAvailable}</p>
             <p>{props.PropertyFeatures.PropertyAdvertText}</p>
             {tenancyLink? 
-            <p>Apply for Tenancy: <a href={tenancyLink.redirect}>{tenancyLink.redirect}</a></p>
-            : <p></p>
+            <p>Apply for Tenancy: <a target="_blank" href={tenancyLink.redirect}>{tenancyLink.redirect}</a></p>
+            : <p>Apply for Tenancy:</p>
             }
         </Wrapper>
     )
