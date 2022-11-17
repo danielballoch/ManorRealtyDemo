@@ -6,6 +6,7 @@ export default async (req, res) => {
     var api_secret = process.env.TPS_SECRET
     let api_url = "https://www.tpsportal.co.nz/api/v1/tenancy_application/create_property"
     var api_date = new Date().toISOString();
+    console.log(req)
     let api_body = JSON.stringify({
         client_code:"5866",
         property_code: "ABC123",

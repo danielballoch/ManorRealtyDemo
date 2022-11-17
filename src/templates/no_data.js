@@ -5,6 +5,11 @@ import styled from '@emotion/styled'
 const Wrapper = styled.div`
 max-width: 900px;
 margin: 50px auto;
+@media (max-width: 910px) {
+       p,h2{
+        margin: 10px !important;
+       }
+}
 p {
     a {
         text-decoration: none;
@@ -67,10 +72,14 @@ p {
         box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
         
     }
+   
 }
 `
 
 const BackButton = styled(Link)`
+@media (max-width: 910px) {
+    padding: 10px;
+}
 text-decoration: none;
 color: black;
 font-size: 18px;
@@ -100,7 +109,7 @@ export default function PropertyPage({data, pageContext}){
                 property_code: props.PropertyCode,
                 unit: props.PropertyFeatures.PropertyUnit,
                 street_name: props.PropertyAddress2,
-                postcode: "3210"
+                postcode: props.PropertyFeatures.PropertyPostCode
             })
           })
         .then(res => res.json())

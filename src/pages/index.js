@@ -10,17 +10,23 @@ const Wrapper = styled.div`
     margin: 20px;
 }
 .wrap {
+    /* flex-direction: column; */
     display: flex;
-    height: 100vh;
+    /* height: 100vh; */
     justify-content: center;
-    align-items:center;
-    margin-top: -2%; 
+    
+    margin-top: 100px; 
+    @media (max-width: 600px) {
+        margin-top: 50px;
+        flex-direction: column;
+        align-items:center;
+    }
 }
 .card {
 text-decoration: none!important;
 box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 margin: 10px;
-width: 400px;
+max-width: 400px;
 transition: .3s;
 .imagecontainer {
   width: 200px;
