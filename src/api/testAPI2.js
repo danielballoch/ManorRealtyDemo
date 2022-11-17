@@ -4,7 +4,7 @@ const crypto = require('crypto')
 export default async (req, res) => {
     var api_public_key = process.env.TPS_KEY;
     var api_secret = process.env.TPS_SECRET
-    let api_url = "https://testing.tpsportal.co.nz/api/v1/tenancy_application/create_property"
+    let api_url = "https://www.tpsportal.co.nz/api/v1/tenancy_application/create_property"
     var api_date = new Date().toISOString();
     let api_body = JSON.stringify({
         client_code:"5866",

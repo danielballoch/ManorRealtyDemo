@@ -1,18 +1,6 @@
 const fetch = (...args) =>
 import(`node-fetch`).then(({ default: fetch }) => fetch(...args))
 
-/**
- * @type {import('gatsby').GatsbyNode['createPages']}
- */
-exports.createPages = async ({ actions }) => {
-  const { createPage } = actions
-  createPage({
-    path: "/using-dsg",
-    component: require.resolve("./src/templates/using-dsg.js"),
-    context: {},
-    defer: true,
-  })
-}
 require('dotenv').config({
     path: `.env.${process.env.NODE_ENV}`
   });
@@ -36,29 +24,70 @@ exports.sourceNodes = async ({
       }
   }
   const result = await fetch(url, options)
-  const resultData = await result.json()
-//   console.log(resultData)
+  const response = await result.json()
+  let propertyImageUrls = []
+  response.forEach(property => {
+      propertyImageUrls.push(`https://api.getpalace.com/Service.svc/RestService/v2AvailablePropertyImagesURL/JSON/${property.PropertyCode}`)
+  });
+
+  let allData = [];
+  const allPropertyImages = await Promise.all(propertyImageUrls.map(async (url,i) => {
+      const resp = await fetch(url, options);
+      const imageData = await resp.json()
+      allData.push(imageData)
+  }))
+  console.log(allData)
   // create node for build time data example in the docs
   createNode({
     // nameWithOwner and url are arbitrary fields from the data
-    data: resultData,
+    data: response,
     // required fields
-    id: `palaceProperties`,
+    id: `palacePropertyDetails`,
     parent: null,
     children: [],
     internal: {
-      type: `palaceProperties`,
-      contentDigest: createContentDigest(resultData),
+      type: `palacePropertyDetails`,
+      contentDigest: createContentDigest(response),
+    },
+  })
+  createNode({
+    // nameWithOwner and url are arbitrary fields from the data
+    data: allData,
+    // required fields
+    id: `palacePropertyImages`,
+    parent: null,
+    children: [],
+    internal: {
+      type: `palacePropertyImages`,
+      contentDigest: createContentDigest(allData),
     },
   })
 }
 
+// exports.createResolvers = ({ createResolvers }) => {
+//     const resolvers = {
+//       data: {
+//         ID: {
+//           type: "palaceProperties",
+//           resolve(source, args, context, info) {
+//             return context.nodeModel.getNodeById({
+//               id: source.PropertyCode,
+//               type: "palaceProperties",
+//             })
+//           },
+//         },
+//       },
+//     }
+//     createResolvers(resolvers)
+//   }
+
+
 exports.createPages = async ({actions: {createPage}, graphql}) => {
     const data = await graphql(
         `
-        {
-            palaceProperties{
-                data {
+        query{
+            palacePropertyDetails{
+                data{
                     PropertyAddress1
                     PropertyAddress2
                     PropertyAddress3
@@ -76,9 +105,44 @@ exports.createPages = async ({actions: {createPage}, graphql}) => {
                     PropertySortCode
                     PropertyStatus
                     PropertyUnit
+                    PropertyCustomList {
+                        PropertyCustomName
+                        PropertyCustomValue
+                    }
+                    PropertyFeatures {
+                        PropertyAdvertText
+                        PropertyAmenities
+                        PropertyBathroomsNo
+                        PropertyBedroomsNo
+                        PropertyCarsNo
+                        PropertyClass
+                        PropertyEnsuitesNo
+                        PropertyFeatureDetails
+                        PropertyFloorArea
+                        PropertyFurnishings
+                        PropertyGeographicLocation
+                        PropertyHeader
+                        PropertyLandAreaHectares
+                        PropertyLandAreaMSquared
+                        PropertyNewConstruction
+                        PropertyParking
+                        PropertyPetsAllowed
+                        PropertyPostCode
+                        PropertyPublishAddress
+                        PropertyPublishEntry
+                        PropertySmokersAllowed
+                        PropertyStories
+                        PropertyVirtualTourURL
+                        PropertyWebLinkURL
+                        PropertyYearBuilt
+                    }
                 }
-            }       
-
+            }
+            palacePropertyImages {
+                data {
+                    PropertyImageURL
+                }
+            }
         }
         `
     )
@@ -86,13 +150,11 @@ exports.createPages = async ({actions: {createPage}, graphql}) => {
         reporter.panicOnBuild(`Error while running GraphQL query.`)
         return
     }
-    data.data.palaceProperties.data.forEach((item, i) => {
+    data.data.palacePropertyDetails.data.forEach((item, i) => {
         createPage({
-            path: item.PropertyAddress1+" "+item.PropertyAddress2,
+            path: item.PropertyAddress1+item.PropertyAddress2,
             component: require.resolve("./src/templates/no_data.js"),
+            context: {slug: i}
         })
     })
-    
-
-
 }
