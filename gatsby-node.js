@@ -88,7 +88,7 @@ exports.createPages = async ({actions: {createPage}, graphql}) => {
     }
     data.data.palaceProperties.data.forEach((item, i) => {
         createPage({
-            path: "/page"+ i,
+            path: item.PropertyAddress1+" "+item.PropertyAddress2,
             component: require.resolve("./src/templates/no_data.js"),
         })
     })
