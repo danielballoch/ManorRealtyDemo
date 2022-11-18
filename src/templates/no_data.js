@@ -90,6 +90,8 @@ transition: .3s;
 }
 `
 
+export const Head = ({data, pageContext}) => <title>Manor Realty Demo | {data.palacePropertyDetails.data[pageContext.slug].PropertyAddress1+" "+data.palacePropertyDetails.data[pageContext.slug].PropertyAddress2}</title>
+
 export default function PropertyPage({data, pageContext}){
     const [activePicture, setActivePicture] = useState(0)
     const [tenancyLink, setTenancyLink] = useState()

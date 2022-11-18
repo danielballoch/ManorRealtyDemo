@@ -72,51 +72,13 @@ p:last-of-type {
 }
 
 `
+export const Head = () => <title>Manor Realty Demo | Properties page</title>
 
 export default function Index({data}){
     const [propertyData, setPropertyData] = useState();
-    console.log(data)
-
-    useEffect(()=>{
-        fetch(`/api/testAPI`, {
-            method: `GET`,
-            headers: {
-              "content-type": `application/json`,
-            },
-          })
-        .then(res => res.json())
-        .then(body => {
-          console.log(`response from API:`, body);
-          setPropertyData(body)
-        })
-    },[])
-
-    // useEffect(()=>{
-    //     fetch(`/api/testAPI2`, {
-    //         method: `POST`,
-    //         headers: {
-    //           "content-type": `application/json`,
-    //         },
-    //         body: {
-    //             agent_name: {propertyData.},
-    //             agent_email: "",
-    //             client_code: "",
-    //             property_code: "",
-    //             unit: "",
-    //             street_name: "",
-    //             postcode: ""
-    //         }
-    //       })
-    //     .then(res => res.json())
-    //     .then(body => {
-    //       console.log(`response from API:`, body);
-    //       setPropertyData(body)
-    //     })
-    // },[propertyData])
     
     return(
         <Wrapper>
-            {/* <h1 class="heading">Manor Realty Properties:</h1> */}
             <div className="wrap">
             {data.palacePropertyDetails.data.map((property, i) => (
                 <Link to={"/"+property.PropertyAddress1+property.PropertyAddress2} className="card" key={"Property " + i}>
