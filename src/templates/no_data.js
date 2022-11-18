@@ -125,11 +125,35 @@ export default function PropertyPage({data, pageContext}){
 
     console.log(data);
     console.log(pageContext)
+    //add image swipe
+    const [touchStart, setTouchStart] = React.useState(0);
+    const [touchEnd, setTouchEnd] = React.useState(0);
+
+    function handleTouchStart(e) {
+        setTouchStart(e.targetTouches[0].clientX);
+    }
+
+    function handleTouchMove(e) {
+        setTouchEnd(e.targetTouches[0].clientX);
+        console.log(touchEnd)
+    }
+
+    function handleTouchEnd() {
+        if (touchStart - touchEnd > 50) {
+            // do your stuff here for left swipe
+            if(activePicture<imageProps.length-1){setActivePicture(activePicture+1)} else {setActivePicture(0)}
+        }
+
+        if (touchStart - touchEnd < -50) {
+            // do your stuff here for right swipe
+            if(activePicture>0){setActivePicture(activePicture-1)} else {setActivePicture(imageProps.length-1)}
+        }
+    }
 
     return(
         <Wrapper>
             <BackButton to="/">Back to Properties</BackButton>
-            <img src={imageProps[activePicture].PropertyImageURL}></img>
+            <img src={imageProps[activePicture].PropertyImageURL} onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}/>
             <div className="buttons">
                 <button onClick={() => {if(activePicture>0){setActivePicture(activePicture-1)}else {setActivePicture(imageProps.length-1)}}}><span className="arrow left"/></button>
                 {imageProps.map((X,i) => 
