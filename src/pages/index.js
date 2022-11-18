@@ -20,6 +20,10 @@ const Wrapper = styled.div`
         margin-top: 50px;
         flex-direction: column;
         align-items:center;
+        .card {
+            max-height: 1000px;
+        }
+        
     }
 }
 .card {
@@ -27,6 +31,7 @@ text-decoration: none!important;
 box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 margin: 10px;
 max-width: 400px;
+max-height: 569px;
 transition: .3s;
 .imagecontainer {
   width: 200px;
