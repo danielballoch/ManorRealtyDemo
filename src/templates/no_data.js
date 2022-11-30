@@ -164,7 +164,7 @@ export default function PropertyPage({data, pageContext}){
                 <button onClick={() => {if(activePicture<imageProps.length-2){setActivePicture(activePicture+1)} else {setActivePicture(0)}}}><span className="arrow"/></button>
             </div>
             <h2>{props.PropertyFeatures.PropertyHeader}</h2>
-            <p>Location: {props.PropertyAddress1+" "+props.PropertyAddress2+" "+props.PropertyAddress3+" "+props.PropertyAddress4}</p>
+            <p>{props.PropertyFeatures.PropertyBedroomsNo} Bedroom, {props.PropertyFeatures.PropertyBathroomsNo} Bathroom {props.PropertyFeatures.PropertyClass} located at {props.PropertyAddress1}, {props.PropertyAddress2}, {props.PropertyAddress3}, {props.PropertyAddress4}.</p>
             <p>Rent Amount: ${props.PropertyRentAmount} Per {props.PropertyRentalPeriod}</p>
             <p>Date Available: {props.PropertyDateAvailable}</p>
             <p>{props.PropertyFeatures.PropertyAdvertText}</p>

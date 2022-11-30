@@ -63,13 +63,16 @@ img {
 }
 .subtitle {
     font-weight: 500;
+    font-size: 20px;
 }
 p {
     padding: 0 20px;
     color: black;
+    font-size: 15px;
 }
 p:last-of-type {
     text-decoration: underline 0px rgba(0,0,0,0);
+    font-size: 16px;
 }
 
 `
@@ -101,9 +104,9 @@ export default function Index({data}){
                         <div className="imgcontainer">
                             <img src={data.palacePropertyImages.data[propertyOrder[i]][0].PropertyImageURL}/>
                         </div>
-                        <p className="subtitle">{property.PropertyAddress1}, {property.PropertyAddress2}, {property.PropertyAddress3}, {property.PropertyAddress4}</p>
+                        <p className="subtitle">{property.PropertyFeatures.PropertyHeader}</p>
+                        <p>{property.PropertyFeatures.PropertyBedroomsNo} Bedroom, {property.PropertyFeatures.PropertyBathroomsNo} Bathroom {property.PropertyFeatures.PropertyClass} located at {property.PropertyAddress1}, {property.PropertyAddress2}, {property.PropertyAddress3}, {property.PropertyAddress4}.</p>
                         <p>Rent Amount: ${property.PropertyRentAmount} per {property.PropertyRentalPeriod}</p>
-                        <p>{property.PropertyFeatures.PropertyAdvertText.slice(0, 125)}</p>
                         <p>Read More...</p>
                     </Link>
 
