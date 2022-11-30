@@ -96,7 +96,7 @@ export default function PropertyPage({data, pageContext}){
     const [activePicture, setActivePicture] = useState(0)
     const [tenancyLink, setTenancyLink] = useState()
     let props = data.palacePropertyDetails.data[pageContext.slug];
-    let imageProps = data.palacePropertyImages.data[pageContext.slug];
+    let imageProps = data.palacePropertyImages.data[pageContext.order[pageContext.slug]];
     useEffect(()=>{
         fetch(`/api/testAPI2`, {
             method: `POST`,
@@ -141,12 +141,12 @@ export default function PropertyPage({data, pageContext}){
     function handleTouchEnd() {
         if (touchStart - touchEnd > 50) {
             // do your stuff here for left swipe
-            if(activePicture<imageProps.length-1){setActivePicture(activePicture+1)} else {setActivePicture(0)}
+            if(activePicture<imageProps.length-2){setActivePicture(activePicture+1)} else {setActivePicture(0)}
         }
 
         if (touchStart - touchEnd < -50) {
             // do your stuff here for right swipe
-            if(activePicture>0){setActivePicture(activePicture-1)} else {setActivePicture(imageProps.length-1)}
+            if(activePicture>0){setActivePicture(activePicture-2)} else {setActivePicture(imageProps.length-2)}
         }
     }
 
@@ -155,11 +155,13 @@ export default function PropertyPage({data, pageContext}){
             <BackButton to="/">Back to Properties</BackButton>
             <img src={imageProps[activePicture].PropertyImageURL} onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}/>
             <div className="buttons">
-                <button onClick={() => {if(activePicture>0){setActivePicture(activePicture-1)}else {setActivePicture(imageProps.length-1)}}}><span className="arrow left"/></button>
+                <button onClick={() => {if(activePicture>0){setActivePicture(activePicture-1)}else {setActivePicture(imageProps.length-2)}}}><span className="arrow left"/></button>
                 {imageProps.map((X,i) => 
+                    i < imageProps.length-1?
                     <button onClick={() => {setActivePicture(i)}} className={activePicture == i ? "dot active" : "dot"}/>
+                    : <span/>
                 )}
-                <button onClick={() => {if(activePicture<imageProps.length-1){setActivePicture(activePicture+1)} else {setActivePicture(0)}}}><span className="arrow"/></button>
+                <button onClick={() => {if(activePicture<imageProps.length-2){setActivePicture(activePicture+1)} else {setActivePicture(0)}}}><span className="arrow"/></button>
             </div>
             <h2>{props.PropertyFeatures.PropertyHeader}</h2>
             <p>Location: {props.PropertyAddress1+" "+props.PropertyAddress2+" "+props.PropertyAddress3+" "+props.PropertyAddress4}</p>
@@ -236,6 +238,7 @@ export const query = graphql`
         palacePropertyImages {
             data {
                 PropertyImageURL
+                propertyCode
             }
         }
     }

@@ -158,11 +158,20 @@ exports.createPages = async ({actions: {createPage}, graphql}) => {
         reporter.panicOnBuild(`Error while running GraphQL query.`)
         return
     }
-    data.data.palacePropertyDetails.data.forEach((item, i) => {
+    let propertyOrder = [];
+    data.data.palacePropertyDetails.data.forEach((property, i) => {
+        let current = property.PropertyCode;
+        console.log("current: ",current)
+        data.data.palacePropertyDetails.data.forEach((property2,i) => {
+            if (current === data.data.palacePropertyImages.data[i][data.data.palacePropertyImages.data[i].length-1].propertyCode){
+                propertyOrder.push(i)
+            }
+        })
+        
         createPage({
-            path: item.PropertyAddress1+item.PropertyAddress2,
+            path: property.PropertyAddress1+property.PropertyAddress2,
             component: require.resolve("./src/templates/no_data.js"),
-            context: {slug: i}
+            context: {slug: i, order: propertyOrder}
         })
     })
 }

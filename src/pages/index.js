@@ -83,9 +83,9 @@ export default function Index({data}){
         //foreach to run through and add matchs to MatchImage
         // console.log(property.PropertyCode)
         // console.log(data.palacePropertyImages.data[i][data.palacePropertyImages.data[i].length-1].propertyCode)
-        let current = i;
+        let current = property.PropertyCode;
         data.palacePropertyDetails.data.forEach((property,i) => {
-            if (data.palacePropertyDetails.data[current].PropertyCode === data.palacePropertyImages.data[i][data.palacePropertyImages.data[i].length-1].propertyCode){
+            if (current === data.palacePropertyImages.data[i][data.palacePropertyImages.data[i].length-1].propertyCode){
                 propertyOrder.push(i)
             }
 
