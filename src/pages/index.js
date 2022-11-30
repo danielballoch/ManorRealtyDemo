@@ -15,7 +15,8 @@ const Wrapper = styled.div`
     /* height: 100vh; */
     justify-content: center;
     flex-wrap: wrap;
-    margin-top: 100px; 
+    max-width: 1300px;
+    margin: 100px auto;
     @media (max-width: 600px) {
         margin-top: 50px;
         flex-direction: column;
