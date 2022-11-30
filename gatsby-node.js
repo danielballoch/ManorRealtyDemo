@@ -25,15 +25,17 @@ exports.sourceNodes = async ({
   }
   const result = await fetch(url, options)
   const response = await result.json()
-  let propertyImageUrls = []
-  response.forEach(property => {
-      propertyImageUrls.push(`https://api.getpalace.com/Service.svc/RestService/v2AvailablePropertyImagesURL/JSON/${property.PropertyCode}`)
-  });
+//   let propertyImageUrls = []
+//   response.forEach(property => {
+//       propertyImageUrls.push(`https://api.getpalace.com/Service.svc/RestService/v2AvailablePropertyImagesURL/JSON/${property.PropertyCode}`)
+//   });
 
   let allData = [];
-  const allPropertyImages = await Promise.all(propertyImageUrls.map(async (url,i) => {
+  const allPropertyImages = await Promise.all(response.map(async (response,i) => {
+      let url = `https://api.getpalace.com/Service.svc/RestService/v2AvailablePropertyImagesURL/JSON/${response.PropertyCode}`
       const resp = await fetch(url, options);
       const imageData = await resp.json()
+      imageData.push({"propertyCode" : response.PropertyCode})
       allData.push(imageData)
   }))
   console.log(allData)
@@ -146,6 +148,7 @@ exports.createPages = async ({actions: {createPage}, graphql}) => {
             palacePropertyImages {
                 data {
                     PropertyImageURL
+                    propertyCode
                 }
             }
         }
