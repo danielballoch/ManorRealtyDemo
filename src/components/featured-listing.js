@@ -128,6 +128,15 @@ h1 {
     @media screen and (min-width: 1920px){
         font-size: 5em; 
     }
+    @media (max-width: 767px){
+        font-size: 40px;
+    }
+    @media (max-width: 479px){
+    width: 100%;
+    margin-top: 0px;
+    margin-bottom: 10px;
+    font-size: 2em;
+    }
 }
 h3 {
     font-family: Montserrat, sans-serif;

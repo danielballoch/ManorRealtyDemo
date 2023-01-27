@@ -38,8 +38,17 @@ h1 {
     font-weight: 400;
     letter-spacing: 0.05em;
     text-transform: uppercase;
-    @media screen and (min-width: 1920px){
+    @media (min-width: 1920px){
         font-size: 5em;
+    }
+    @media (max-width: 767px){
+        font-size: 40px;
+    }
+    @media (max-width: 479px){
+    width: 100%;
+    margin-top: 0px;
+    margin-bottom: 10px;
+    font-size: 2em;
     }
 }
 .img-container {
@@ -109,6 +118,9 @@ h1 {
             .logo, .logo-div  {
                 opacity: 1;
             }
+        }
+        .div-text {
+            padding: 25px 20px 25px 25px;
         }
         h3 {
             height: 53.671875px;

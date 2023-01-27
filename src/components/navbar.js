@@ -21,7 +21,6 @@ const Nav = styled.div`
     top: 0%;
     right: 0%;
     bottom: auto;
-    width: 100%;
     z-index: 10;
     position: fixed;
     min-height: 4.5rem;
