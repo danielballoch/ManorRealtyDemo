@@ -152,7 +152,7 @@ export default function PropertyPage({data, pageContext}){
 
     return(
         <Wrapper>
-            <BackButton to="/">Back to Properties</BackButton>
+            <BackButton to="/property-rentals">Back to Properties</BackButton>
             <img src={imageProps[activePicture].PropertyImageURL} onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}/>
             <div className="buttons">
                 <button onClick={() => {if(activePicture>0){setActivePicture(activePicture-1)}else {setActivePicture(imageProps.length-2)}}}><span className="arrow left"/></button>

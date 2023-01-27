@@ -3,9 +3,11 @@ import { graphql, Link } from "gatsby"
 import { StaticImage } from "gatsby-plugin-image"
 import { useEffect, useState } from "react";
 import styled from '@emotion/styled'
+import Layout from "../components/layout";
 
 
 const Wrapper = styled.div`
+margin-top: 100px;
 .heading {
     margin: 20px;
 }
@@ -97,22 +99,11 @@ export default function Index({data}){
     });}
     console.log(propertyOrder)
     return(
-        <Wrapper>
-            <div className="wrap">
-            {data.palacePropertyDetails.data.map((property, i) => (
-                    <Link to={"/"+property.PropertyAddress1+property.PropertyAddress2} className="card" key={"Property " + i}>
-                        <div className="imgcontainer">
-                            <img src={data.palacePropertyImages.data[propertyOrder[i]][0].PropertyImageURL}/>
-                        </div>
-                        <p className="subtitle">{property.PropertyFeatures.PropertyHeader}</p>
-                        <p>{property.PropertyFeatures.PropertyBedroomsNo} Bedroom, {property.PropertyFeatures.PropertyBathroomsNo} Bathroom {property.PropertyFeatures.PropertyClass} located at {property.PropertyAddress1}, {property.PropertyAddress2}, {property.PropertyAddress3}, {property.PropertyAddress4}.</p>
-                        <p>Rent Amount: ${property.PropertyRentAmount} per {property.PropertyRentalPeriod}</p>
-                        <p>Read More...</p>
-                    </Link>
-
-            ))}
-            </div>
-        </Wrapper>
+        <Layout dark={true}>
+            <Wrapper>
+                <h1>Home</h1>
+            </Wrapper>
+        </Layout>
     )
 }
 
