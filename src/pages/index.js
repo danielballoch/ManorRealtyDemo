@@ -101,7 +101,7 @@ export default function Index({data}){
     return(
         <Layout dark={true}>
             <Wrapper>
-                <h1>Home</h1>
+                <h1>Homepage</h1>
             </Wrapper>
         </Layout>
     )
